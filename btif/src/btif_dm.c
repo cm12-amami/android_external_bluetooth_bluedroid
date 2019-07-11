@@ -3357,7 +3357,7 @@ static void btif_dm_ble_auth_cmpl_evt (tBTA_DM_AUTH_CMPL *p_auth_cmpl)
         }
         else
         {
-            btif_dm_save_ble_bonding_keys();
+            btif_dm_save_ble_bonding_keys(bd_addr);
             BTA_GATTC_Refresh_No_Discovery(bd_addr.address);
             btif_dm_get_remote_services_by_transport(&bd_addr, BTA_GATT_TRANSPORT_LE);
         }
@@ -3435,14 +3435,10 @@ void    btif_dm_get_ble_local_keys(tBTA_DM_BLE_LOCAL_KEY_MASK *p_key_mask, BT_OC
     BTIF_TRACE_DEBUG("%s  *p_key_mask=0x%02x",__FUNCTION__,   *p_key_mask);
 }
 
-void btif_dm_save_ble_bonding_keys(void)
+void btif_dm_save_ble_bonding_keys(bt_bdaddr_t bd_addr)
 {
 
-    bt_bdaddr_t bd_addr;
-
     BTIF_TRACE_DEBUG("%s",__FUNCTION__ );
-
-    bdcpy(bd_addr.address, pairing_cb.bd_addr);
 
     if (pairing_cb.ble.is_penc_key_rcvd)
     {
